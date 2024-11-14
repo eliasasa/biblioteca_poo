@@ -131,6 +131,16 @@ class Biblioteca:
         Biblioteca.sql.desconectar()
 
     @staticmethod
+    def confirmar():
+        conf = input(f'Tem certeza que deseja fazer a exclusão? (Y/N): ').strip().upper()
+
+        if conf == 'Y':
+            return True
+        else:
+            print('Ação cancelada.')
+            return False
+
+    @staticmethod
     def deletar_livro():
         Biblioteca.sql.conectar()
 
@@ -158,16 +168,22 @@ class Biblioteca:
             Biblioteca.sql.desconectar() 
             return
         
-        delet_query = '''
-            DELETE FROM livro WHERE codigo = %s
-        '''
+        if Biblioteca.confirmar():
+        
+            delet_query = '''
+                DELETE FROM livro WHERE codigo = %s
+            '''
 
-        Biblioteca.sql.cursor.execute(delet_query, (codigoU,))
-        Biblioteca.sql.conector.commit()
+            Biblioteca.sql.cursor.execute(delet_query, (codigoU,))
+            Biblioteca.sql.conector.commit()
 
-        print("Livro deletado com sucesso!")
+            print("Livro deletado com sucesso!")
+
+        else: pass
+
         Biblioteca.sql.desconectar()
-
+    
+    @staticmethod
     def listar_user():
         Biblioteca.sql.conectar()
     
@@ -184,6 +200,74 @@ class Biblioteca:
             print(f"ID: {id_usuario}, Nome: {nome}, CPF: {cpf}, Telefone: {telefone}")
 
         Biblioteca.sql.desconectar()
+
+    @staticmethod
+    def add_user():
+        Biblioteca.sql.conectar()
+
+        nomeA = input('Insira o nome do usuário: ')
+        cpfA = input('CPF: ')
+
+        while len(cpfA) != 11 or not cpfA.isdigit():
+            print('CPF inválido. O CPF deve conter exatamente 11 dígitos numéricos.')
+            cpfA = input('CPF: ')
+
+        telA = input('Telefone: ')
+
+        while len(telA) > 20 or len(telA) < 10:
+            print('Telefone inválido. O telefone deve conter entre 10 e 20 caracteres.')
+            telA = input('Telefone: ')
+
+        Biblioteca.sql.cursor.execute('SELECT cpf FROM usuario WHERE cpf = %s', (cpfA,))
+        resultado = Biblioteca.sql.cursor.fetchone()
+
+        if resultado:
+            print('Já existe um usuário cadastrado com esse CPF.')
+            Biblioteca.sql.desconectar()
+            return
+
+        query = 'INSERT INTO usuario(nome, cpf, telefone) VALUES (%s, %s, %s)'
+        Biblioteca.sql.cursor.execute(query, (nomeA, cpfA, telA))
+        Biblioteca.sql.conector.commit()
+        print("Usuário adicionado com sucesso!")
+
+        Biblioteca.sql.desconectar()
+
+    @staticmethod
+    def delet_user():
+        Biblioteca.sql.conectar()
+
+        try:
+            idD = int(input('ID do usuário a ser deletado: ').strip())
+        except ValueError:
+            print("ID inválido. O ID deve ser um número inteiro.")
+            Biblioteca.sql.desconectar()
+            return
+
+        Biblioteca.sql.cursor.execute('SELECT * FROM usuario WHERE id_usuario = %s', (idD,))
+        resultado = Biblioteca.sql.cursor.fetchone()
+
+        if not resultado:
+            print('Usuário não encontrado.')
+            Biblioteca.sql.desconectar()
+            return
+
+        print("Usuário encontrado:", resultado)
+
+        if Biblioteca.confirmar():
+            delet_query = 'DELETE FROM usuario WHERE id_usuario = %s'
+            Biblioteca.sql.cursor.execute(delet_query, (idD,))
+            Biblioteca.sql.conector.commit()
+
+            print("Usuário deletado com sucesso!")
+                
+        else: pass
+            
+        Biblioteca.sql.desconectar()
+
+
+
+    
 
 
 
