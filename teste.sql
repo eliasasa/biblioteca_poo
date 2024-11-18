@@ -1,0 +1,4 @@
+-- Active: 1726092351703@@192.168.100.52@3306@biblioteca
+ALTER TABLE usuario ADD COLUMN senha VARCHAR(30) NOT NULL, ADD COLUMN email VARCHAR(50) NOT NULL;
+
+SELECT * from usuario;

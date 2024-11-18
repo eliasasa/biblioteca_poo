@@ -23,7 +23,11 @@ class Biblioteca:
         Biblioteca.sql.desconectar()
 
     @staticmethod
-    def search(tituloS=None, autorS=None, generoS=None, statusS=None, codigoS=None):
+    def search_livro(tituloS=None, autorS=None, generoS=None, statusS=None, codigoS=None):
+        if not any([tituloS, autorS, generoS, statusS, codigoS]):
+            print("Por favor, insira ao menos um critério de busca.")
+            return
+
         Biblioteca.sql.conectar()
         query = "SELECT titulo, autor, genero, status, codigo FROM livro WHERE 1=1"
         parametros = {
@@ -55,6 +59,7 @@ class Biblioteca:
             print("Nenhum livro encontrado com os critérios fornecidos.")
 
         Biblioteca.sql.desconectar()
+
 
     @staticmethod
     def obter_dados_livro():
@@ -112,7 +117,6 @@ class Biblioteca:
             return
 
         print("Livro encontrado:", resultado)
-
 
         livro_atualizado = Biblioteca.obter_dados_livro()
 
@@ -187,7 +191,7 @@ class Biblioteca:
     def listar_user():
         Biblioteca.sql.conectar()
     
-        Biblioteca.sql.cursor.execute('SELECT id_usuario, nome, cpf, telefone FROM usuario')
+        Biblioteca.sql.cursor.execute('SELECT id_usuario, nome, cpf, telefone, senha, email FROM usuario')
         resultados = Biblioteca.sql.cursor.fetchall()
 
         if not resultados:
@@ -196,8 +200,8 @@ class Biblioteca:
             return
         
         for resultado in resultados:
-            id_usuario, nome, cpf, telefone = resultado
-            print(f"ID: {id_usuario}, Nome: {nome}, CPF: {cpf}, Telefone: {telefone}")
+            id_usuario, nome, cpf, telefone, senha, email = resultado
+            print(f"ID: {id_usuario}, Nome: {nome}, CPF: {cpf}, Telefone: {telefone}, Senha: {senha}, E-mail: {email}")
 
         Biblioteca.sql.desconectar()
 
@@ -206,11 +210,21 @@ class Biblioteca:
         Biblioteca.sql.conectar()
 
         nomeA = input('Insira o nome do usuário: ')
-        cpfA = input('CPF: ')
+        
+        while True:
+            cpfA = input('CPF: ').strip()
 
-        while len(cpfA) != 11 or not cpfA.isdigit():
-            print('CPF inválido. O CPF deve conter exatamente 11 dígitos numéricos.')
-            cpfA = input('CPF: ')
+            if len(cpfA) != 11 or not cpfA.isdigit():
+                print('CPF inválido. O CPF deve conter exatamente 11 dígitos numéricos.')
+                continue
+
+            Biblioteca.sql.cursor.execute('SELECT cpf FROM usuario WHERE cpf = %s', (cpfA,))
+            resultado = Biblioteca.sql.cursor.fetchone()
+
+            if resultado:
+                print('Já existe um usuário cadastrado com esse CPF. Tente novamente.')
+            else:
+                break 
 
         telA = input('Telefone: ')
 
@@ -218,16 +232,20 @@ class Biblioteca:
             print('Telefone inválido. O telefone deve conter entre 10 e 20 caracteres.')
             telA = input('Telefone: ')
 
-        Biblioteca.sql.cursor.execute('SELECT cpf FROM usuario WHERE cpf = %s', (cpfA,))
-        resultado = Biblioteca.sql.cursor.fetchone()
+        senhaA = str(input('Senha: '))
 
-        if resultado:
-            print('Já existe um usuário cadastrado com esse CPF.')
-            Biblioteca.sql.desconectar()
-            return
+        while True:
+            emailA = input('E-mail: ').strip()
+            Biblioteca.sql.cursor.execute('SELECT email FROM usuario WHERE email = %s', (emailA,))
+            resultado = Biblioteca.sql.cursor.fetchone()
+            
+            if resultado:
+                print('E-mail já cadastrado, tente novamente.')
+            else:
+                break
 
-        query = 'INSERT INTO usuario(nome, cpf, telefone) VALUES (%s, %s, %s)'
-        Biblioteca.sql.cursor.execute(query, (nomeA, cpfA, telA))
+        query = 'INSERT INTO usuario(nome, cpf, telefone, senha, email) VALUES (%s, %s, %s, %s, %s)'
+        Biblioteca.sql.cursor.execute(query, (nomeA, cpfA, telA, senhaA, emailA))
         Biblioteca.sql.conector.commit()
         print("Usuário adicionado com sucesso!")
 
@@ -264,6 +282,91 @@ class Biblioteca:
         else: pass
             
         Biblioteca.sql.desconectar()
+
+    @staticmethod
+    def search_usuario(nomeS=None, emailS=None, idS=None):
+        if not any([nomeS, emailS, idS]):
+            print("Por favor, insira ao menos um critério de busca.")
+            return
+
+        Biblioteca.sql.conectar()
+        query = "SELECT id_usuario, nome, cpf, telefone, email, senha FROM usuario WHERE 1=1"
+        parametros = {
+            'nome': nomeS,
+            'email': emailS,
+            'id_usuario': idS
+        }
+
+        query_parametros = []
+        for campo, valor in parametros.items():
+            if valor is not None:
+                if isinstance(valor, str): 
+                    query += f" AND {campo} LIKE %s"
+                    query_parametros.append('%' + valor.lower() + '%')
+                else:
+                    query += f" AND {campo} = %s"
+                    query_parametros.append(valor)
+
+        Biblioteca.sql.cursor.execute(query, query_parametros)
+        resultados = Biblioteca.sql.cursor.fetchall()
+
+        if resultados:
+            for resultado in resultados:
+                id_usuario, nome, cpf, telefone, email, senha = resultado
+                print(f"ID: {id_usuario}, Nome: {nome}, CPF: {cpf}, Telefone: {telefone}, E-mail: {email}, Senha: {senha} ")
+        else:
+            print("Nenhum usuário encontrado com os critérios fornecidos.")
+
+        Biblioteca.sql.desconectar()
+
+    @staticmethod
+    def atualizar_usuario():
+        Biblioteca.sql.conectar()
+
+        id_usuario = input('ID do usuário a ser atualizado: ').strip()
+
+        try:
+            id_usuario = int(id_usuario)
+        except ValueError:
+            print("ID inválido. Por favor, insira um número válido.")
+            Biblioteca.sql.desconectar()
+            return
+
+        Biblioteca.sql.cursor.execute('SELECT nome, telefone, senha, email, cpf FROM usuario WHERE id_usuario = %s', (id_usuario,))
+        resultado = Biblioteca.sql.cursor.fetchone()
+
+        if not resultado:
+            print('Usuário não encontrado.')
+            Biblioteca.sql.desconectar()
+            return
+
+        nome_atual, telefone_atual, senha_atual, email_atual, cpf_atual = resultado
+        print("Usuário encontrado:")
+        print(f"Nome: {nome_atual}, Telefone: {telefone_atual}, Senha: {senha_atual}, E-mail: {email_atual}, CPF: {cpf_atual}")
+
+        print("\nAtualize os dados (deixe em branco para manter o valor atual):")
+        nome = input(f"Nome [{nome_atual}]: ").strip() or nome_atual
+        telefone = input(f"Telefone [{telefone_atual}]: ").strip() or telefone_atual
+        senha = input(f"Senha [{senha_atual}]: ").strip() or senha_atual
+        email = input(f"E-mail [{email_atual}]: ").strip() or email_atual
+
+        update_query = '''
+            UPDATE usuario
+            SET nome = %s, telefone = %s, senha = %s, email = %s
+            WHERE id_usuario = %s
+        '''
+        parametros = (nome, telefone, senha, email, id_usuario)
+
+        Biblioteca.sql.cursor.execute(update_query, parametros)
+        Biblioteca.sql.conector.commit()
+
+        print("Usuário atualizado com sucesso!")
+
+        Biblioteca.sql.desconectar()
+
+
+
+
 
 
 
