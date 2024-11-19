@@ -191,7 +191,7 @@ class Biblioteca:
     def listar_user():
         Biblioteca.sql.conectar()
     
-        Biblioteca.sql.cursor.execute('SELECT id_usuario, nome, cpf, telefone, senha, email FROM usuario')
+        Biblioteca.sql.cursor.execute('SELECT id_usuario, nome, cpf, telefone, senha, email, emprestimos FROM usuario')
         resultados = Biblioteca.sql.cursor.fetchall()
 
         if not resultados:
@@ -200,8 +200,8 @@ class Biblioteca:
             return
         
         for resultado in resultados:
-            id_usuario, nome, cpf, telefone, senha, email = resultado
-            print(f"ID: {id_usuario}, Nome: {nome}, CPF: {cpf}, Telefone: {telefone}, Senha: {senha}, E-mail: {email}")
+            id_usuario, nome, cpf, telefone, senha, email, emprestimos = resultado
+            print(f"ID: {id_usuario}, Nome: {nome}, CPF: {cpf}, Telefone: {telefone}, Senha: {senha}, E-mail: {email}, Emprestimos: {emprestimos}")
 
         Biblioteca.sql.desconectar()
 

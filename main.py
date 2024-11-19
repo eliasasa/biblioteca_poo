@@ -12,9 +12,9 @@ from models.livro import Livro
 
 # Biblioteca.listar_livros()
 
-Biblioteca.listar_user()
-
 # Biblioteca.add_user()
+
+Biblioteca.listar_user()
 
 # Biblioteca.search_usuario(emailS='elias')
 
