@@ -2,7 +2,7 @@ from config.db import SQL
 from controllers.biblioteca import Biblioteca
 from models.livro import Livro
 
-# Biblioteca.listar_livros()
+Biblioteca.listar_livros()
 
 # Biblioteca.add_livro()
 
@@ -14,7 +14,7 @@ from models.livro import Livro
 
 # Biblioteca.add_user()
 
-Biblioteca.listar_user()
+# Biblioteca.listar_user()
 
 # Biblioteca.search_usuario(emailS='elias')
 

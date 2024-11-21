@@ -2,6 +2,7 @@ from config.db import SQL
 from config.connect import host
 from models.livro import Livro
 
+
 class Biblioteca:
     sql = SQL(**host)
 
@@ -61,14 +62,14 @@ class Biblioteca:
         Biblioteca.sql.desconectar()
 
 
-    @staticmethod
-    def obter_dados_livro():
-        titulo = str(input('Título: '))
-        autor = str(input('Autor: '))
-        genero = str(input('Gênero: '))
-        codigo = int(input('Código: '))
-        status = Biblioteca.definir_status()
-        return Livro(titulo, autor, genero, status, codigo)
+    # @staticmethod
+    # def obter_dados_livro(titulo, autor, genero, status, codigo):
+    #     titulo = str(input('Título: '))
+    #     autor = str(input('Autor: '))
+    #     genero = str(input('Gênero: '))
+    #     codigo = int(input('Código: '))
+    #     status = Biblioteca.definir_status()
+    #     return Livro(titulo, autor, genero, status, codigo)
 
     @staticmethod
     def definir_status():
@@ -86,11 +87,11 @@ class Biblioteca:
                 print("Digite um número válido.")
 
     @staticmethod
-    def add_livro():
+    def add_livro(titulo, autor, genero, status, codigo):
         Biblioteca.sql.conectar()
-        livro = Biblioteca.obter_dados_livro()
+        livro = titulo, autor, genero, status, codigo
         query = 'INSERT INTO livro(titulo, autor, genero, status, codigo) VALUES (%s, %s, %s, %s, %s)'
-        Biblioteca.sql.cursor.execute(query, livro.to_tuple())
+        Biblioteca.sql.cursor.execute(query, livro)
         Biblioteca.sql.conector.commit()
         print("Livro adicionado com sucesso!")
         Biblioteca.sql.desconectar()
