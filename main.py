@@ -4,7 +4,7 @@ from models.livro import Livro
 
 Biblioteca.listar_livros()
 
-# Biblioteca.add_livro()
+# Biblioteca.add_livro('132111', 'El13211ias', '32111', '1113221', '1110')
 
 # Biblioteca.atualizar_livro()
 

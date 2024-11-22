@@ -1,6 +1,6 @@
 from config.db import SQL
-from config.connect import host
 from models.livro import Livro
+from config.connect import host
 
 
 class Biblioteca:
@@ -88,13 +88,24 @@ class Biblioteca:
 
     @staticmethod
     def add_livro(titulo, autor, genero, status, codigo):
-        Biblioteca.sql.conectar()
-        livro = titulo, autor, genero, status, codigo
-        query = 'INSERT INTO livro(titulo, autor, genero, status, codigo) VALUES (%s, %s, %s, %s, %s)'
-        Biblioteca.sql.cursor.execute(query, livro)
-        Biblioteca.sql.conector.commit()
-        print("Livro adicionado com sucesso!")
-        Biblioteca.sql.desconectar()
+        try:
+            Biblioteca.sql.conectar()
+            query_verifica = 'SELECT codigo FROM livro WHERE codigo = %s'
+            Biblioteca.sql.cursor.execute(query_verifica, (codigo,))
+            if Biblioteca.sql.cursor.fetchone():
+                print("Já existe um livro cadastrado com este código.")
+                return
+            
+            livro = (titulo, autor, genero, status, codigo)
+            query = 'INSERT INTO livro (titulo, autor, genero, status, codigo) VALUES (%s, %s, %s, %s, %s)'
+            Biblioteca.sql.cursor.execute(query, livro)
+            Biblioteca.sql.conector.commit()
+            print("Livro adicionado com sucesso!")
+        except Exception as e:
+            print(f"Erro ao adicionar livro: {e}")
+        finally:
+            Biblioteca.sql.desconectar()
+
 
     @staticmethod
     def atualizar_livro():
