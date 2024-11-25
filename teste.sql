@@ -3,4 +3,6 @@ ALTER TABLE usuario ADD COLUMN senha VARCHAR(30) NOT NULL, ADD COLUMN email VARC
 
 ALTER Table usuario ADD COLUMN emprestimos TINYINT not null DEFAULT 0;
 
-SELECT * from usuario;
+SELECT * from livro;
+
+DESCRIBE livro;

@@ -13,7 +13,7 @@ class MainWindow(QMainWindow):
         self.cad_livro.clicked.connect(self.tela_cad_livro)
 
     def tela_cad_livro(self):
-        ui_file = 'views/cad_livro.ui'
+        ui_file = 'cad_livro.ui'
         uic.load_ui.loadUi(ui_file, self)
 
 if __name__ == '__main__':
