@@ -6,3 +6,7 @@ ALTER Table usuario ADD COLUMN emprestimos TINYINT not null DEFAULT 0;
 SELECT * from livro;
 
 DESCRIBE livro;
+
+TRUNCATE TABLE livro;
+
+SET FOREIGN_KEY_CHECKS = 1; 

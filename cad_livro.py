@@ -7,7 +7,7 @@ from controllers.biblioteca import Biblioteca as B
 # pip install PyQt6
 # https://build-system.fman.io/qt-designer-download
  
-ui_file = 'cad_livro.ui'
+ui_file = 'views/cad_livro.ui'
  
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -19,9 +19,10 @@ class MainWindow(QMainWindow):
         titulo = self.nTitle.text()
         autor = self.nAutor.text()
         genero = self.nGen.text()
-        status = 'Disponível'
         codigo = self.nCod.text()
-        B.add_livro(titulo, autor, genero, status, codigo)
+        B.add_livro(titulo, autor, genero, 'Disponível', codigo)
+
+
  
 if __name__ == '__main__':
     app = QApplication(sys.argv)
