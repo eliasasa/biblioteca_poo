@@ -448,38 +448,12 @@ font-family: Segoe UI;</string>
       <enum>QLayout::SetMaximumSize</enum>
      </property>
      <item>
-      <widget class="QCommandLinkButton" name="cad_home">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>80</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string>Voltar</string>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>../../../../Downloads/ic--outline-double-arrow.png</normaloff>../../../../Downloads/ic--outline-double-arrow.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeType">
-        <enum>QSizePolicy::Fixed</enum>
+        <enum>QSizePolicy::Expanding</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -905,6 +879,21 @@ color: #4a2525;
          </property>
          <property name="text">
           <string>Cadastrar</string>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QPushButton" name="cad_home">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(85, 170, 255);
+border-radius: 10px;
+font: bold 14px;
+padding: 6px;
+color: white;
+max-width: 100px</string>
+         </property>
+         <property name="text">
+          <string>Voltar</string>
          </property>
         </widget>
        </item>

@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: #263238;
+   <string notr="true">background: rgb(47, 47, 47);
 color: white;
 font-family: Segoe UI;</string>
   </property>
@@ -34,12 +34,9 @@ font-family: Segoe UI;</string>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>150</width>
+         <width>40</width>
          <height>20</height>
         </size>
        </property>
@@ -48,7 +45,7 @@ font-family: Segoe UI;</string>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <spacer name="verticalSpacer">
+        <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -60,7 +57,7 @@ font-family: Segoe UI;</string>
          </property>
         </spacer>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QFrame" name="frame">
          <property name="minimumSize">
           <size>
@@ -69,9 +66,9 @@ font-family: Segoe UI;</string>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">background: #546E7A;
-border-radius: 16px;
-</string>
+          <string notr="true">background: rgb(207, 207, 207);
+border-radius: 20px;
+color: rgb(47, 47, 47);</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -82,17 +79,20 @@ border-radius: 16px;
          <widget class="QWidget" name="horizontalLayoutWidget_2">
           <property name="geometry">
            <rect>
-            <x>-30</x>
-            <y>20</y>
-            <width>408</width>
-            <height>441</height>
+            <x>10</x>
+            <y>10</y>
+            <width>331</width>
+            <height>481</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <spacer name="horizontalSpacer_4">
+            <spacer name="horizontalSpacer_3">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Minimum</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -104,19 +104,20 @@ border-radius: 16px;
            </item>
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
+             <item alignment="Qt::AlignHCenter">
               <widget class="QLabel" name="label">
                <property name="styleSheet">
                 <string notr="true">font-weight: bold;
-font-size: 32px;</string>
+font-size: 32px;
+color: rgb(47, 47, 47);</string>
                </property>
                <property name="text">
-                <string>Cadastrar Usuário</string>
+                <string>Login</string>
                </property>
               </widget>
              </item>
              <item>
-              <spacer name="verticalSpacer_4">
+              <spacer name="verticalSpacer_6">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -130,22 +131,13 @@ font-size: 32px;</string>
              </item>
              <item>
               <widget class="QLabel" name="label_2">
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
                <property name="text">
-                <string>Nome</string>
+                <string>User</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="nomeCad">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>30</height>
-                </size>
-               </property>
+              <widget class="QLineEdit" name="logUser">
                <property name="styleSheet">
                 <string notr="true">background-color: white;
 color: black;
@@ -160,70 +152,12 @@ margin-bottom: 10px;
              <item>
               <widget class="QLabel" name="label_3">
                <property name="text">
-                <string>CPF</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="cpfCad">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: white;
-color: black;
-border: 1px solid;
-border-radius: 2px;
-border-color: rgb(121, 66, 66);
-margin-bottom: 10px;
-</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Telefone</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="telCad">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: white;
-color: black;
-border: 1px solid;
-border-radius: 2px;
-border-color: rgb(121, 66, 66);
-margin-bottom: 10px;
-</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_5">
-               <property name="text">
                 <string>Senha</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="senCad">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>30</height>
-                </size>
-               </property>
+              <widget class="QLineEdit" name="logSen">
                <property name="styleSheet">
                 <string notr="true">background-color: white;
 color: black;
@@ -236,28 +170,51 @@ margin-bottom: 10px;
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_6">
+              <spacer name="verticalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="logBut">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(0, 85, 127);
+border-radius: 10px;
+font: bold 14px;
+padding: 6px;
+color: white;
+</string>
+               </property>
                <property name="text">
-                <string>E-mail</string>
+                <string>Logar</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="emailCad">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
+              <widget class="QPushButton" name="cadBut">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: white;
-color: black;
-border: 1px solid;
-border-radius: 2px;
-border-color: rgb(121, 66, 66);
-margin-bottom: 10px;
+                <string notr="true">background-color: rgb(255, 170, 127);
+border-radius: 10px;
+font: bold 14px;
+padding: 6px;
+color: white;
 </string>
+               </property>
+               <property name="text">
+                <string>Cadastrar</string>
                </property>
               </widget>
              </item>
@@ -274,48 +231,15 @@ margin-bottom: 10px;
                </property>
               </spacer>
              </item>
-             <item>
-              <widget class="QPushButton" name="cadUserBut">
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(0, 85, 127);
-border-radius: 10px;
-font: bold 14px;
-padding: 6px;
-color: white;
-</string>
-               </property>
-               <property name="text">
-                <string>Cadastrar</string>
-               </property>
-              </widget>
-             </item>
-             <item alignment="Qt::AlignHCenter">
-              <widget class="QPushButton" name="cadUser_home">
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color:  rgb(170, 0, 0);
-border-radius: 10px;
-font: bold 14px;
-padding: 6px;
-color:  white;
-</string>
-               </property>
-               <property name="text">
-                <string>Voltar</string>
-               </property>
-              </widget>
-             </item>
             </layout>
            </item>
            <item>
-            <spacer name="horizontalSpacer_3">
+            <spacer name="horizontalSpacer_4">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Minimum</enum>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
@@ -330,7 +254,7 @@ color:  white;
         </widget>
        </item>
        <item>
-        <spacer name="verticalSpacer_2">
+        <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
