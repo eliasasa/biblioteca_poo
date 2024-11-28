@@ -145,7 +145,7 @@ max-height: 150px;</string>
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="3" column="0">
+        <item row="4" column="0">
          <spacer name="verticalSpacer_2">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -157,6 +157,80 @@ max-height: 150px;</string>
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="del_livro">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>180</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: #7289DA;
+border: 2px solid;
+border-radius: 10px;
+border-color: transparent;
+color: #FFFFFF;</string>
+          </property>
+          <property name="text">
+           <string>Deletar Livro</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="del_user">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>180</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: #7289DA;
+border: 2px solid;
+border-radius: 10px;
+border-color: transparent;
+color: #FFFFFF;</string>
+          </property>
+          <property name="text">
+           <string>Deletar User</string>
+          </property>
+         </widget>
         </item>
         <item row="0" column="0">
          <spacer name="verticalSpacer">
@@ -251,17 +325,8 @@ color: #FFFFFF;</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QPushButton" name="del_livro">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="emp_livro">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -271,10 +336,12 @@ color: #FFFFFF;</string>
           <property name="font">
            <font>
             <family>Segoe UI</family>
-            <pointsize>16</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: #7289DA;
@@ -284,21 +351,13 @@ border-color: transparent;
 color: #FFFFFF;</string>
           </property>
           <property name="text">
-           <string>Deletar Livro</string>
+           <string>Realizar 
+Empréstimo</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="del_user">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+        <item row="3" column="1">
+         <widget class="QPushButton" name="devol_livro">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -308,7 +367,6 @@ color: #FFFFFF;</string>
           <property name="font">
            <font>
             <family>Segoe UI</family>
-            <pointsize>16</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -321,7 +379,8 @@ border-color: transparent;
 color: #FFFFFF;</string>
           </property>
           <property name="text">
-           <string>Deletar User</string>
+           <string>Devolver 
+Livro</string>
           </property>
          </widget>
         </item>

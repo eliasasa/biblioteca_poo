@@ -1,6 +1,6 @@
 import sys
 from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox
 from controllers.biblioteca import Biblioteca as B
 
 ui_file_home = 'views/homeAdm.ui'
@@ -16,16 +16,31 @@ class MainWindow(QMainWindow):
         self.cadBut.clicked.connect(self.tela_cad_user)
         self.login = False
 
+    from PyQt6.QtWidgets import QMessageBox
+
     def logar(self):
         usuario = self.logUser.text()
         senha = self.logSen.text()
 
-        # Fazer tratamento, criar table de adm e emprestimo
+        if not usuario or not senha:
+            QMessageBox.warning(self, "Erro", "Por favor, preencha nome de usuário e senha.")
+            return
 
-        print(usuario, senha)
+        login_sucesso, is_admin = B.logar(usuario, senha)
 
-        self.login = True
-        self.voltar_home()
+        if login_sucesso:
+            if is_admin:
+                QMessageBox.information(self, "Login bem-sucedido", "Usuário logado com sucesso! Você é um administrador.")
+                self.login = True
+                self.voltar_home()
+
+            else:
+                QMessageBox.information(self, "Login bem-sucedido", "Usuário logado com sucesso!")
+                self.login = True
+                # self.abrir_tela_usuario()
+        else:
+            QMessageBox.critical(self, "Erro", "Falha no login. Usuário ou senha incorretos.")
+
     
     def tela_cad_user (self):
         # Carrrega tela de cadastro de usuário
@@ -65,8 +80,8 @@ class MainWindow(QMainWindow):
         senha = self.senCad.text()
         email = self.emailCad.text()
 
-        print(nome, cpf, telefone, senha, email)
-        
+        if bool(B.add_user(nome, cpf, telefone, senha, email)):      
+            self.voltar_home()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
