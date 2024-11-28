@@ -1,6 +1,6 @@
 from config.db import SQL
-from config.connect import host
 from models.livro import Livro
+from config.connect import host
 
 
 class Biblioteca:
@@ -88,13 +88,24 @@ class Biblioteca:
 
     @staticmethod
     def add_livro(titulo, autor, genero, status, codigo):
-        Biblioteca.sql.conectar()
-        livro = titulo, autor, genero, status, codigo
-        query = 'INSERT INTO livro(titulo, autor, genero, status, codigo) VALUES (%s, %s, %s, %s, %s)'
-        Biblioteca.sql.cursor.execute(query, livro)
-        Biblioteca.sql.conector.commit()
-        print("Livro adicionado com sucesso!")
-        Biblioteca.sql.desconectar()
+        try:
+            Biblioteca.sql.conectar()
+            query_verifica = 'SELECT codigo FROM livro WHERE codigo = %s'
+            Biblioteca.sql.cursor.execute(query_verifica, (codigo,))
+            if Biblioteca.sql.cursor.fetchone():
+                print("Já existe um livro cadastrado com este código.")
+                return
+            
+            livro = (titulo, autor, genero, status, codigo)
+            query = 'INSERT INTO livro (titulo, autor, genero, status, codigo) VALUES (%s, %s, %s, %s, %s)'
+            Biblioteca.sql.cursor.execute(query, livro)
+            Biblioteca.sql.conector.commit()
+            print("Livro adicionado com sucesso!")
+        except Exception as e:
+            print(f"Erro ao adicionar livro: {e}")
+        finally:
+            Biblioteca.sql.desconectar()
+
 
     @staticmethod
     def atualizar_livro():
@@ -189,6 +200,31 @@ class Biblioteca:
         Biblioteca.sql.desconectar()
     
     @staticmethod
+    def logar(nome, senha):
+        Biblioteca.sql.conectar()
+
+        try:
+            query = 'SELECT id_usuario, nome, senha, is_admin FROM usuario WHERE nome = %s'
+            Biblioteca.sql.cursor.execute(query, (nome,))
+            usuario = Biblioteca.sql.cursor.fetchone()
+
+            if usuario:
+                if usuario[2] == senha:
+                    is_admin = usuario[3]
+                    
+                    return True, is_admin 
+                else:
+                    print("Senha incorreta.")
+                    return False, False
+            else:
+                print("Usuário não encontrado.")
+                return False, False 
+        finally:
+            Biblioteca.sql.desconectar()
+
+
+
+    @staticmethod
     def listar_user():
         Biblioteca.sql.conectar()
     
@@ -207,50 +243,50 @@ class Biblioteca:
         Biblioteca.sql.desconectar()
 
     @staticmethod
-    def add_user():
+    def add_user(nomeA, cpfA, telA, senhaA, emailA):
         Biblioteca.sql.conectar()
 
-        nomeA = input('Insira o nome do usuário: ')
-        
-        while True:
-            cpfA = input('CPF: ').strip()
+        try:
+            while True:
+                cpfA = cpfA.strip()
 
-            if len(cpfA) != 11 or not cpfA.isdigit():
-                print('CPF inválido. O CPF deve conter exatamente 11 dígitos numéricos.')
-                continue
+                if len(cpfA) != 11 or not cpfA.isdigit():
+                    print('CPF inválido. O CPF deve conter exatamente 11 dígitos numéricos.')
+                    return False
 
-            Biblioteca.sql.cursor.execute('SELECT cpf FROM usuario WHERE cpf = %s', (cpfA,))
-            resultado = Biblioteca.sql.cursor.fetchone()
+                Biblioteca.sql.cursor.execute('SELECT cpf FROM usuario WHERE cpf = %s', (cpfA,))
+                resultado = Biblioteca.sql.cursor.fetchone()
 
-            if resultado:
-                print('Já existe um usuário cadastrado com esse CPF. Tente novamente.')
-            else:
-                break 
+                if resultado:
+                    print('Já existe um usuário cadastrado com esse CPF. Tente novamente.')
+                    return False
+                else:
+                    break
 
-        telA = input('Telefone: ')
+            if len(telA) < 10 or len(telA) > 20:
+                print('Telefone inválido. O telefone deve conter entre 10 e 20 caracteres.')
+                return
 
-        while len(telA) > 20 or len(telA) < 10:
-            print('Telefone inválido. O telefone deve conter entre 10 e 20 caracteres.')
-            telA = input('Telefone: ')
+            while True:
+                Biblioteca.sql.cursor.execute('SELECT email FROM usuario WHERE email = %s', (emailA,))
+                resultado = Biblioteca.sql.cursor.fetchone()
 
-        senhaA = str(input('Senha: '))
+                if resultado:
+                    print('E-mail já cadastrado, tente novamente.')
+                    return False 
+                else:
+                    break  
 
-        while True:
-            emailA = input('E-mail: ').strip()
-            Biblioteca.sql.cursor.execute('SELECT email FROM usuario WHERE email = %s', (emailA,))
-            resultado = Biblioteca.sql.cursor.fetchone()
+            query = 'INSERT INTO usuario(nome, cpf, telefone, senha, email) VALUES (%s, %s, %s, %s, %s)'
+            Biblioteca.sql.cursor.execute(query, (nomeA, cpfA, telA, senhaA, emailA))
+            Biblioteca.sql.conector.commit()
+            print("Usuário adicionado com sucesso!")
+            return True
+
+        finally:
+            Biblioteca.sql.desconectar()
             
-            if resultado:
-                print('E-mail já cadastrado, tente novamente.')
-            else:
-                break
 
-        query = 'INSERT INTO usuario(nome, cpf, telefone, senha, email) VALUES (%s, %s, %s, %s, %s)'
-        Biblioteca.sql.cursor.execute(query, (nomeA, cpfA, telA, senhaA, emailA))
-        Biblioteca.sql.conector.commit()
-        print("Usuário adicionado com sucesso!")
-
-        Biblioteca.sql.desconectar()
 
     @staticmethod
     def delet_user():
