@@ -67,7 +67,7 @@ font-family: Segoe UI;</string>
          </property>
          <property name="styleSheet">
           <string notr="true">background: rgb(207, 207, 207);
-border-radius: 20px;
+border-radius: 16px;
 color: rgb(47, 47, 47);</string>
          </property>
          <property name="frameShape">
@@ -206,15 +206,16 @@ color: white;
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(255, 170, 127);
+                <string notr="true">background-color: transparent;
 border-radius: 10px;
 font: bold 14px;
 padding: 6px;
-color: white;
+color: rgb(255, 85, 0);
+text-decoration: underline;
 </string>
                </property>
                <property name="text">
-                <string>Cadastrar</string>
+                <string>Não tem um login? Cadastrar</string>
                </property>
               </widget>
              </item>
