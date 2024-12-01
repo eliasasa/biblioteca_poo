@@ -1,6 +1,6 @@
 import sys
 from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from controllers.biblioteca import Biblioteca as B
 
 ui_file_home = 'views/homeAdm.ui'

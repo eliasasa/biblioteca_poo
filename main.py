@@ -1,7 +1,9 @@
 from config.db import SQL
 from controllers.biblioteca import Biblioteca
 from models.livro import Livro
-from PyQt6.QtWidgets import QApplication
+import sys
+from PyQt6 import uic
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox
 
 # Biblioteca.listar_livros()
 
@@ -15,7 +17,16 @@ from PyQt6.QtWidgets import QApplication
 
 # Biblioteca.add_user()
 
-Biblioteca.listar_user()
+# Biblioteca.listar_user()
+
+# total = Biblioteca.consultar_emprestimos_usuario(1)
+# print(total)
+
+# Biblioteca.realizar_emprestimo(2, 103)
+
+Biblioteca.devolver_livro(2, 103)
+
+# Biblioteca.realizar_emprestimo(2, 103)
 
 # Biblioteca.search_usuario(emailS='elias')
 

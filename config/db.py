@@ -1,4 +1,4 @@
-import mysql.connector as sql
+import mysql.connector
 
 class SQL:
     def __init__(self, host, user, password, database):
@@ -11,15 +11,16 @@ class SQL:
 
     def conectar(self):
         try:
-            self.conector = sql.connect(
-                host=self.host,
-                user=self.user,
-                password=self.password,
-                database=self.database
-            )
-            print('Conectou ao banco de dados')
-            self.cursor = self.conector.cursor()
-        except sql.Error as e:
+            if not self.conector or not self.cursor:
+                self.conector = mysql.connector.connect(
+                    host=self.host,
+                    user=self.user,
+                    password=self.password,
+                    database=self.database
+                )
+                print('Conectou ao banco de dados')
+                self.cursor = self.conector.cursor()
+        except mysql.connector.Error as e:
             print(f"Erro ao conectar ao banco: {e}")
 
     def desconectar(self):
@@ -29,5 +30,6 @@ class SQL:
             if self.conector:
                 self.conector.close()
             print('Desconectou do banco de dados')
-        except sql.Error as e:
+        except mysql.connector.Error as e:
             print(f"Erro ao desconectar do banco: {e}")
+
