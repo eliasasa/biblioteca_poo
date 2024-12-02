@@ -32,4 +32,3 @@ class SQL:
             print('Desconectou do banco de dados')
         except mysql.connector.Error as e:
             print(f"Erro ao desconectar do banco: {e}")
-

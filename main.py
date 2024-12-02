@@ -24,9 +24,9 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox
 
 # Biblioteca.realizar_emprestimo(2, 103)
 
-Biblioteca.devolver_livro(2, 103)
+# Biblioteca.devolver_livro(1, 103)
 
-# Biblioteca.realizar_emprestimo(2, 103)
+Biblioteca.realizar_emprestimo(2, 103)
 
 # Biblioteca.search_usuario(emailS='elias')
 
