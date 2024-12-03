@@ -144,58 +144,56 @@ class Biblioteca:
 
         Biblioteca.sql.desconectar()
 
-    @staticmethod
-    def confirmar():
-        conf = input(f'Tem certeza que deseja fazer a exclusão? (Y/N): ').strip().upper()
+    # @staticmethod
+    # def confirmar():
+    #     conf = input(f'Tem certeza que deseja fazer a exclusão? (Y/N): ').strip().upper()
 
-        if conf == 'Y':
-            return True
-        else:
-            print('Ação cancelada.')
-            return False
-
+    #     if conf == 'Y':
+    #         return True
+    #     else:
+    #         print('Ação cancelada.')
+    #         return False
+        
     @staticmethod
-    def deletar_livro():
+    def deletar_livro(codigoU):
+        """
+        Deleta um livro do banco de dados e retorna um status e uma mensagem.
+        """
         Biblioteca.sql.conectar()
-
-        codigoU = input('Código do livro a ser deletado: ').strip()
 
         try:
             codigoU = int(codigoU)
         except ValueError:
-            print("Código inválido. Por favor, insira um número válido.")
             Biblioteca.sql.desconectar()
-            return
+            return False, "Código inválido. Por favor, insira um número válido."
 
-        Biblioteca.sql.cursor.execute('SELECT * FROM livro WHERE codigo = %s', (codigoU,))
-        resultado = Biblioteca.sql.cursor.fetchone()
+        try:
+            Biblioteca.sql.cursor.execute('SELECT * FROM livro WHERE codigo = %s', (codigoU,))
+            resultado = Biblioteca.sql.cursor.fetchone()
 
-        if not resultado:
-            print('Livro não encontrado.')
-            Biblioteca.sql.desconectar()
-            return
+            if not resultado:
+                Biblioteca.sql.desconectar()
+                return False, "Livro não encontrado."
 
-        print("Livro encontrado:", resultado)
+            nome_livro = resultado[1] 
+            if resultado[4].lower() == 'indisponível':
+                Biblioteca.sql.desconectar()
+                return False, "Livro emprestado, não pode ser deletado."
 
-        if resultado[-2] == 'Indisponível':
-            print('Livro emprestado, não pode ser deletado.')
-            Biblioteca.sql.desconectar() 
-            return
-        
-        if Biblioteca.confirmar():
-        
-            delet_query = '''
-                DELETE FROM livro WHERE codigo = %s
-            '''
+            Biblioteca.sql.cursor.execute('SET FOREIGN_KEY_CHECKS = 0;')
 
-            Biblioteca.sql.cursor.execute(delet_query, (codigoU,))
+            delete_query = 'DELETE FROM livro WHERE codigo = %s'
+            Biblioteca.sql.cursor.execute(delete_query, (codigoU,))
             Biblioteca.sql.conector.commit()
 
-            print("Livro deletado com sucesso!")
+            Biblioteca.sql.cursor.execute('SET FOREIGN_KEY_CHECKS = 1;')
 
-        else: pass
+            return True, f"Livro '{nome_livro}' deletado com sucesso!"
 
-        Biblioteca.sql.desconectar()
+        except Exception as e:
+            return False, f"Erro ao deletar livro: {str(e)}"
+        finally:
+            Biblioteca.sql.desconectar()
     
     @staticmethod
     def logar(nome, senha):

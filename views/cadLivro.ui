@@ -884,6 +884,9 @@ color: #4a2525;
        </item>
        <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="cad_home">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgb(85, 170, 255);
 border-radius: 10px;

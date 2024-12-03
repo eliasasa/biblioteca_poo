@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox
 
 # Biblioteca.atualizar_livro()
 
-# Biblioteca.deletar_livro()
+Biblioteca.deletar_livro(101)
 
 # Biblioteca.listar_livros()
 
@@ -26,7 +26,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox
 
 # Biblioteca.devolver_livro(1, 103)
 
-Biblioteca.realizar_emprestimo(2, 103)
+# Biblioteca.realizar_emprestimo(2, 103)
 
 # Biblioteca.search_usuario(emailS='elias')
 
