@@ -198,6 +198,24 @@ color: white;</string>
              </property>
             </widget>
            </item>
+           <item alignment="Qt::AlignHCenter">
+            <widget class="QPushButton" name="delLivro_home">
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color:  rgb(170, 0, 0);
+border-radius: 10px;
+font: bold 14px;
+padding: 6px;
+color:  white;
+</string>
+             </property>
+             <property name="text">
+              <string>Voltar</string>
+             </property>
+            </widget>
+           </item>
            <item>
             <spacer name="verticalSpacer_6">
              <property name="orientation">

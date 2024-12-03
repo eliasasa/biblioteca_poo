@@ -156,28 +156,22 @@ class Biblioteca:
         
     @staticmethod
     def deletar_livro(codigoU):
-        """
-        Deleta um livro do banco de dados e retorna um status e uma mensagem.
-        """
-        Biblioteca.sql.conectar()
-
         try:
-            codigoU = int(codigoU)
-        except ValueError:
-            Biblioteca.sql.desconectar()
-            return False, "Código inválido. Por favor, insira um número válido."
+            Biblioteca.sql.conectar()
 
-        try:
+            if not Biblioteca.sql.cursor:
+                return False, "Erro: o cursor do banco de dados não está inicializado."
+
             Biblioteca.sql.cursor.execute('SELECT * FROM livro WHERE codigo = %s', (codigoU,))
             resultado = Biblioteca.sql.cursor.fetchone()
 
             if not resultado:
-                Biblioteca.sql.desconectar()
                 return False, "Livro não encontrado."
 
-            nome_livro = resultado[1] 
-            if resultado[4].lower() == 'indisponível':
-                Biblioteca.sql.desconectar()
+            nome_livro = resultado[1]  
+            status_livro = resultado[4]  
+
+            if status_livro and status_livro.lower() == 'indisponível':
                 return False, "Livro emprestado, não pode ser deletado."
 
             Biblioteca.sql.cursor.execute('SET FOREIGN_KEY_CHECKS = 0;')
@@ -192,9 +186,13 @@ class Biblioteca:
 
         except Exception as e:
             return False, f"Erro ao deletar livro: {str(e)}"
+        
         finally:
-            Biblioteca.sql.desconectar()
-    
+            if Biblioteca.sql.cursor:
+                Biblioteca.sql.cursor.close()
+            if Biblioteca.sql.conector:
+                Biblioteca.sql.desconectar()
+
     @staticmethod
     def logar(nome, senha):
         Biblioteca.sql.conectar()
@@ -418,22 +416,18 @@ class Biblioteca:
         
     @staticmethod
     def realizar_emprestimo(id_usuario, codigo_livro):
-        Biblioteca.sql.conectar()
-
         try:
-            # Verificar se o livro existe e está disponível
+            Biblioteca.sql.conectar()
+
             Biblioteca.sql.cursor.execute('SELECT id_livro, status FROM livro WHERE codigo = %s', (codigo_livro,))
             livro = Biblioteca.sql.cursor.fetchone()
 
             if not livro:
-                print("Livro não encontrado com o código fornecido.")
-                return
+                return False, "Livro não encontrado com o código fornecido."
 
-            if livro[1] != 'disponível':  # Verifica se o livro está disponível
-                print(f"O livro com código {codigo_livro} não está disponível para empréstimo.")
-                return
+            if livro[1] != 'disponível':
+                return False, f"O livro com código {codigo_livro} não está disponível para empréstimo."
 
-            # Realizar o empréstimo
             query = '''
                 INSERT INTO emprestimo (id_usuario, id_livro, status_emprestimo)
                 VALUES (%s, %s, %s)
@@ -441,21 +435,20 @@ class Biblioteca:
             Biblioteca.sql.cursor.execute(query, (id_usuario, livro[0], True))
             Biblioteca.sql.conector.commit()
 
-            print(f"Empréstimo realizado com sucesso para o usuário {id_usuario}, livro {codigo_livro}.")
+            return True, f"Empréstimo realizado com sucesso para o usuário {id_usuario}, livro {codigo_livro}."
 
         except Exception as e:
-            print(f"Erro ao realizar o empréstimo: {e}")
+            return False, f"Erro ao realizar o empréstimo: {str(e)}"
 
         finally:
             Biblioteca.sql.desconectar()
 
-        
+
     @staticmethod
     def devolver_livro(id_usuario, codigo_livro):
         try:
-            Biblioteca.sql.conectar()  # Assegura que a conexão está ativa
+            Biblioteca.sql.conectar()
 
-            # Consultando o id_livro a partir do codigo_livro
             query_livro = """
             SELECT id_livro, status
             FROM livro
@@ -468,9 +461,8 @@ class Biblioteca:
                 print(f"Livro com código {codigo_livro} não encontrado.")
                 return False
 
-            id_livro = resultado_livro[0]  # Obtém o id_livro
+            id_livro = resultado_livro[0] 
 
-            # Consultando se o livro foi emprestado ao usuário
             query_emprestimo = """
             SELECT id_emprestimo, status_emprestimo
             FROM emprestimo
@@ -483,7 +475,6 @@ class Biblioteca:
                 print(f"Não há empréstimo ativo para o livro com código {codigo_livro} e o usuário {id_usuario}.")
                 return False
 
-            # Atualiza o status do empréstimo para devolvido (status_emprestimo = 0)
             query_atualizar_emprestimo = """
             UPDATE emprestimo
             SET status_emprestimo = 0
@@ -491,7 +482,6 @@ class Biblioteca:
             """
             Biblioteca.sql.cursor.execute(query_atualizar_emprestimo, (emprestimo[0],))
 
-            # Atualiza o status do livro para 'disponível'
             query_atualizar_livro = """
             UPDATE livro
             SET status = 'disponível'
@@ -499,7 +489,6 @@ class Biblioteca:
             """
             Biblioteca.sql.cursor.execute(query_atualizar_livro, (id_livro,))
 
-            # Confirma as alterações no banco de dados
             Biblioteca.sql.conector.commit()
 
             print(f"Livro com código {codigo_livro} devolvido com sucesso pelo usuário {id_usuario}.")
@@ -510,6 +499,5 @@ class Biblioteca:
             return False
 
         finally:
-            # Certifique-se de desconectar após a operação
             Biblioteca.sql.desconectar()
 

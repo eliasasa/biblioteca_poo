@@ -6,7 +6,7 @@ DESCRIBE emprestimo;
 
 -- TRUNCATE TABLE livro;
 
-SELECT * from usuario;
+SELECT * from emprestimo;
 
 SET FOREIGN_KEY_CHECKS = 1;
 

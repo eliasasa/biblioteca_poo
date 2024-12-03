@@ -11,13 +11,13 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QMessageBox
 
 # Biblioteca.atualizar_livro()
 
-Biblioteca.deletar_livro(101)
+# Biblioteca.deletar_livro(101)
 
-# Biblioteca.listar_livros()
+Biblioteca.listar_livros()
 
 # Biblioteca.add_user()
 
-# Biblioteca.listar_user()
+Biblioteca.listar_user()
 
 # total = Biblioteca.consultar_emprestimos_usuario(1)
 # print(total)
